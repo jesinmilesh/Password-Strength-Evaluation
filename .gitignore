@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment & IDE
+.env
+venv/
+.vscode/
+.idea/
+
+# Massive Dataset Files (>10MB) for GitHub & Render RAM limits
+datasets/extended_threat_corpus*
+datasets/global_breach_corpus*

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Evaluation Based on Modern Attack Techniques</title>
+    
+    <!-- Meta SEO -->
+    <meta name="description" content="Real-time threat evaluation platform assessing passwords against modern attack vectors including 30.4 Million global threat intelligence breach matching, pattern masks, Shannon entropy, and multi-GPU crack estimates.">
+    <meta name="keywords" content="cybersecurity, password evaluation, threat intelligence, brute force, breach detection, global breach corpus, pattern analysis, zxcvbn, entropy">
+    
+    <!-- CSS, Icons & Chart.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Cyber Grid Background -->
+    <div class="cyber-bg"></div>
+    <div class="cyber-overlay"></div>
+
+    <div class="container">
+        <!-- HEADER / NAVBAR -->
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div>
+                    <h1 class="brand-title" style="font-size: 20px;">PASSWORD STRENGTH EVALUATION</h1>
+                    <p class="mono" style="font-size: 11px; color: var(--neon-blue);">
+                        BASED ON MODERN ATTACK TECHNIQUES | 30.4M THREAT RECORDS
+                    </p>
+                </div>
+            </div>
+
+            <div class="status-badge">
+                <span class="pulse-dot"></span>
+                <span>ATTACK ENGINE & 30.4M THREAT DATASETS: ACTIVE</span>
+            </div>
+        </header>
+
+        <!-- HERO / LANDING SECTION -->
+        <section class="hero-section" id="hero">
+            <div class="hero-tag">
+                <i class="fas fa-database"></i> TRAINED ON 30.4 MILLION THREAT INTEL RECORDS
+            </div>
+            <h2 class="hero-title">Password Strength Evaluation<br>Based on Modern Attack Techniques</h2>
+            <p class="hero-subtitle">
+                Traditional password checkers rely on static rule sets (e.g., minimum 8 chars, 1 uppercase, 1 symbol) which create a false sense of security. This platform replaces outdated static rules with offensive threat modeling—evaluating passwords against a 30.4 Million record threat intelligence corpus (`global_breach_corpus.txt` + `extended_threat_corpus.txt` + `high_risk_passwords.txt`), structural pattern masks, Shannon entropy, and multi-hardware attacker capabilities.
+            </p>
+            <div class="hero-actions">
+                <a href="#evaluator" class="btn-cyber">
+                    <i class="fas fa-play"></i> Start Evaluation
+                </a>
+                <a href="#comparison" class="btn-cyber-outline">
+                    <i class="fas fa-balance-scale"></i> Traditional vs Modern
+                </a>
+            </div>
+        </section>
+
+        <!-- SYSTEM ARCHITECTURE COMPARISON CARD -->
+        <section style="margin-bottom: 35px;" id="comparison">
+            <div class="glass-card animated-border">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-shield-halved"></i> System Architecture: Traditional vs Modern Threat Modeling
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="cyber-table">
+                        <thead>
+                            <tr>
+                                <th>Feature Aspect</th>
+                                <th style="color: var(--neon-red);">Traditional Existing Systems</th>
+                                <th style="color: var(--neon-green);">Proposed Modern Threat Evaluation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Evaluation Strategy</strong></td>
+                                <td><span style="color: var(--neon-red);">Static Rules</span> (Count upper/lower/symbols)</td>
+                                <td><span style="color: var(--neon-green);">Offensive Attack Simulation</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Breach Check</strong></td>
+                                <td><span style="color: var(--neon-red);">No breach check</span> (Allows weak terms)</td>
+                                <td><span style="color: var(--neon-green);">30.4M Global Threat Database Matching</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Feedback Quality</strong></td>
+                                <td><span style="color: var(--neon-red);">Generic Feedback</span> ("Add special character")</td>
+                                <td><span style="color: var(--neon-green);">Exact Pattern & Mask Explanation</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Crack Resistance</strong></td>
+                                <td><span style="color: var(--neon-red);">Arbitrary Weak / Strong Label</span></td>
+                                <td><span style="color: var(--neon-green);">Multi-Hardware Crack-Time Estimate</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN EVALUATOR SECTION (6-STEP REAL-TIME WORKFLOW) -->
+        <section class="evaluator-section" id="evaluator">
+            <!-- DASHBOARD SUMMARY CARDS (4 CARDS) -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                <div class="glass-card" style="padding: 16px;">
+                    <div class="metric-label"><i class="fas fa-tachometer-alt" style="color:var(--neon-blue);"></i> Strength Score</div>
+                    <div class="metric-value" id="hudScore" style="font-size: 26px; color: var(--neon-red);">0/100</div>
+                </div>
+                <div class="glass-card" style="padding: 16px;">
+                    <div class="metric-label"><i class="fas fa-atom" style="color:var(--neon-green);"></i> Shannon Entropy</div>
+                    <div class="metric-value" id="hudEntropy" style="font-size: 26px; color: var(--neon-green);">0 bits</div>
+                </div>
+                <div class="glass-card" style="padding: 16px;">
+                    <div class="metric-label"><i class="fas fa-stopwatch" style="color:var(--neon-yellow);"></i> High-End GPU Time</div>
+                    <div class="metric-value" id="hudCrackTime" style="font-size: 22px; color: var(--neon-yellow);">Instant</div>
+                </div>
+                <div class="glass-card" style="padding: 16px;">
+                    <div class="metric-label"><i class="fas fa-exclamation-triangle" style="color:var(--neon-purple);"></i> Risk Level</div>
+                    <div class="metric-value" id="hudRisk" style="font-size: 24px; color: var(--neon-red);">Very Weak</div>
+                </div>
+            </div>
+
+            <!-- PASSWORD INPUT & MAIN CONTROL CARD -->
+            <div class="glass-card animated-border" style="margin-bottom: 30px;">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-terminal"></i> Enter Password for Real-Time Threat Analysis
+                    </div>
+                    <span class="mono" style="font-size: 12px; color: var(--neon-blue);">TRAINED DATASET: 30.4M RECORDS</span>
+                </div>
+
+                <!-- Input Field -->
+                <div class="input-wrapper">
+                    <input type="password" id="passwordInput" class="cyber-input" placeholder="Type password for real-time analysis..." autocomplete="off">
+                    <button class="toggle-pwd-btn" id="togglePwdBtn" title="Show / Hide Password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="input-actions">
+                    <button class="btn-cyber" id="evaluateBtn" style="padding: 10px 24px; font-size: 13px;">
+                        <i class="fas fa-play"></i> Evaluate Password
+                    </button>
+                    <button class="btn-sec-action" id="copyPwdBtn">
+                        <i class="fas fa-copy"></i> Copy Password
+                    </button>
+                    <a href="/result" class="btn-sec-action" style="text-decoration: none;" id="reportBtn">
+                        <i class="fas fa-file-invoice"></i> View Report
+                    </a>
+                </div>
+
+                <!-- Strength Progress Bar -->
+                <div class="strength-bar-container">
+                    <div class="strength-header">
+                        <span class="strength-label">Evaluated Verdict:</span>
+                        <span class="strength-val" id="strengthVal">Very Weak</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill" style="width: 0%; background-color: var(--neon-red);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REAL-TIME 6-STEP WORKFLOW DISPLAY PANEL -->
+            <h3 style="margin-bottom: 15px; font-size: 18px; color: var(--neon-blue);">
+                <i class="fas fa-diagram-project"></i> Real-Time Evaluation Pipeline (Steps 1–6)
+            </h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 35px;">
+                <!-- STEP 1 & STEP 2: INPUT & PREPROCESS -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-title" style="font-size: 14px;">
+                            <i class="fas fa-sign-in-alt"></i> Steps 1 & 2 — Input & Preprocessing
+                        </div>
+                    </div>
+                    <div class="metric-box" style="margin-top: 0;">
+                        <div class="metric-label">Step 1 Status</div>
+                        <div style="font-size: 13px; color: var(--neon-green);" id="step1Status">Awaiting password input...</div>
+
+                        <div class="metric-label" style="margin-top: 12px;">Step 2 Character Count</div>
+                        <div style="font-size: 18px; font-family: var(--font-mono); color: #fff;" id="step2Length">0 Characters</div>
+
+                        <div class="metric-label" style="margin-top: 10px;">Detected Categories</div>
+                        <div style="font-size: 12px; color: var(--text-muted);" id="step2Categories">
+                            None
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: DICTIONARY & BREACH MATCH -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-title" style="font-size: 14px;">
+                            <i class="fas fa-book"></i> Step 3 — Trained 30.4M Global Threat Lookup
+                        </div>
+                    </div>
+                    <div class="metric-box" style="margin-top: 0;">
+                        <div class="metric-label">Dataset Match Result (30,441,053 Records)</div>
+                        <div style="font-size: 13px; color: #fff;" id="step3Result">No input password provided.</div>
+                        <div class="risk-tag risk-safe" id="step3Tag" style="margin-top: 10px;">NO BREACH MATCH</div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: PATTERN & MASK ANALYSIS -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-title" style="font-size: 14px;">
+                            <i class="fas fa-masks-theater"></i> Step 4 — Pattern & Mask Analysis
+                        </div>
+                    </div>
+                    <div class="metric-box" style="margin-top: 0;">
+                        <div class="metric-label">Structural Pattern Output</div>
+                        <div style="font-size: 13px; color: var(--neon-yellow);" id="step4Pattern">
+                            No predictable structural patterns detected.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 5 & 6: ATTACKER HARDWARE PROFILES & CHART.JS GRAPH -->
+            <div class="glass-card animated-border" style="margin-bottom: 35px;">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-server"></i> Step 5 — Attacker Hardware Profiles & Crack-Time Graph (Chart.js)
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                    <!-- Hardware Profiles Table -->
+                    <div>
+                        <h4 style="color: var(--neon-blue); margin-bottom: 12px; font-size: 14px;">
+                            Estimated Crack Time by Attacker Profile:
+                        </h4>
+                        <table class="cyber-table">
+                            <thead>
+                                <tr>
+                                    <th>Attacker Profile</th>
+                                    <th>Estimated Crack Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="fas fa-microchip" style="color: var(--neon-blue);"></i> Single CPU (Slow)</td>
+                                    <td id="cpuTime" style="font-weight: 700;">Instant</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-desktop" style="color: var(--neon-yellow);"></i> Consumer GPU</td>
+                                    <td id="gpuTime" style="font-weight: 700; color: var(--neon-yellow);">Instant</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-server" style="color: var(--neon-red);"></i> High-End GPU Cluster</td>
+                                    <td id="highGpuTime" style="font-weight: 700; color: var(--neon-red);">Instant</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Chart.js Graph Canvas -->
+                    <div>
+                        <h4 style="color: var(--neon-blue); margin-bottom: 12px; font-size: 14px;">
+                            Hardware Crack Time Comparison (Chart.js)
+                        </h4>
+                        <div style="height: 180px; position: relative;">
+                            <canvas id="crackTimeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 6: SCORE & EXPLANATION SUMMARY BOX -->
+            <div class="glass-card" style="margin-bottom: 35px; border-left: 4px solid var(--neon-blue);">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-clipboard-check"></i> Step 6 — Final Threat Verdict & Security Remediations
+                    </div>
+                </div>
+
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>Evaluation Metric</th>
+                            <th>Output Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Overall Score</strong></td>
+                            <td><span style="font-weight:700; font-size:16px; color: var(--neon-red);" id="outScore">0 / 100</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Verdict</strong></td>
+                            <td><span class="risk-tag risk-high" id="outVerdict">Very Weak</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pattern Output</strong></td>
+                            <td id="outPattern">None</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Estimated Crack Time</strong></td>
+                            <td id="outCrackTime" style="color: var(--neon-red); font-weight:700;">Instant</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security Remediation</strong></td>
+                            <td id="outSuggestion" style="color: var(--neon-green);">Enter a strong, unpredictable passphrase.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PASSWORD GENERATOR SECTION -->
+        <section class="generator-section" id="generator">
+            <div class="glass-card animated-border">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-key"></i> Built-in Cryptographic Password Generator
+                    </div>
+                    <button class="btn-cyber" id="genActionBtn" style="padding: 8px 18px; font-size: 12px;">
+                        <i class="fas fa-sync-alt"></i> Generate Password
+                    </button>
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span>Password Length:</span>
+                        <span style="font-weight: 700; color: var(--neon-blue);" id="genLengthVal">16</span>
+                    </div>
+                    <input type="range" id="genLengthSlider" class="cyber-slider" min="6" max="64" value="16">
+                </div>
+
+                <div class="gen-options-grid">
+                    <label class="gen-option-item">
+                        <input type="checkbox" id="genUpper" class="cyber-checkbox" checked>
+                        <span>Uppercase (A-Z)</span>
+                    </label>
+                    <label class="gen-option-item">
+                        <input type="checkbox" id="genLower" class="cyber-checkbox" checked>
+                        <span>Lowercase (a-z)</span>
+                    </label>
+                    <label class="gen-option-item">
+                        <input type="checkbox" id="genNumbers" class="cyber-checkbox" checked>
+                        <span>Numbers (0-9)</span>
+                    </label>
+                    <label class="gen-option-item">
+                        <input type="checkbox" id="genSymbols" class="cyber-checkbox" checked>
+                        <span>Symbols (!@#$)</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>Password Strength Evaluation Based on Modern Attack Techniques</p>
+            <p style="margin-top: 5px; color: var(--neon-blue);">Dataset Trained: 30.4 Million Global Threat Records | Flask, zxcvbn & Chart.js</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

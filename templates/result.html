@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formal Audit Report | Password Strength Evaluation Based on Modern Attack Techniques</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body { background-color: #0b0f19; color: #f1f5f9; padding: 40px 20px; }
+        .report-card { max-width: 850px; margin: 0 auto; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 240, 255, 0.2); padding: 40px; border-radius: 12px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 20px; margin-bottom: 30px; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: #fff; color: #000; }
+            .report-card { border: none; background: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-card">
+        <div class="report-header">
+            <div>
+                <h1 style="font-size: 22px; color: var(--neon-blue);">
+                    <i class="fas fa-file-contract"></i> Password Strength Evaluation
+                </h1>
+                <p class="mono" style="font-size: 13px; color: var(--text-muted);">
+                    Based on Modern Attack Techniques — Formal SOC Audit Report
+                </p>
+            </div>
+            <div class="no-print">
+                <button onclick="window.print()" class="btn-cyber" style="padding: 8px 16px; font-size: 13px;">
+                    <i class="fas fa-print"></i> Print / Save PDF
+                </button>
+                <a href="/" class="btn-sec-action" style="text-decoration: none; padding: 8px 16px; font-size: 13px; margin-left: 10px;">
+                    <i class="fas fa-arrow-left"></i> Back to SOC Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 25px; display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted);">
+            <div><strong>Audit Reference ID:</strong> SEC-AUD-2026-X91</div>
+            <div><strong>Dataset Trained:</strong> 30.4 Million Records</div>
+            <div id="reportTimestamp"><strong>Generated:</strong> Loading...</div>
+        </div>
+
+        <table class="cyber-table" style="margin-bottom: 30px;">
+            <thead>
+                <tr>
+                    <th colspan="2">Evaluated Target Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 30%;"><strong>Evaluated Password (Masked)</strong></td>
+                    <td id="repMaskedPw" class="mono" style="color: var(--neon-blue); font-weight: 700;">Loading...</td>
+                </tr>
+                <tr>
+                    <td><strong>Overall Strength Score</strong></td>
+                    <td id="repScore" style="font-size: 18px; font-weight: 700;">Loading...</td>
+                </tr>
+                <tr>
+                    <td><strong>Threat Risk Verdict</strong></td>
+                    <td id="repVerdict">Loading...</td>
+                </tr>
+                <tr>
+                    <td><strong>Shannon Entropy</strong></td>
+                    <td id="repEntropy">Loading...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="color: var(--neon-blue); font-size: 16px; margin-bottom: 12px;">
+            <i class="fas fa-search"></i> Offensive Vulnerability & Breach Analysis
+        </h3>
+        <table class="cyber-table" style="margin-bottom: 30px;">
+            <tbody>
+                <tr>
+                    <td style="width: 30%;"><strong>30.4M Breach Match</strong></td>
+                    <td id="repDictMatch">Loading...</td>
+                </tr>
+                <tr>
+                    <td><strong>Structural Mask Patterns</strong></td>
+                    <td id="repPatterns">Loading...</td>
+                </tr>
+                <tr>
+                    <td><strong>Estimated GPU Crack Time</strong></td>
+                    <td id="repCrackTime" style="font-weight: 700; color: var(--neon-yellow);">Loading...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="color: var(--neon-blue); font-size: 16px; margin-bottom: 12px;">
+            <i class="fas fa-shield-alt"></i> Executive Security Remediations
+        </h3>
+        <div class="glass-card" style="padding: 20px; border-left: 4px solid var(--neon-green); margin-bottom: 30px;">
+            <p id="repSuggestion" style="margin: 0; color: #fff;">Loading recommendation...</p>
+        </div>
+
+        <div style="text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; font-size: 11px; color: var(--text-muted);">
+            Password Strength Evaluation Based on Modern Attack Techniques | Confidential SOC Evaluation
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pwd = urlParams.get('pwd') || 'Summer2024!';
+
+            fetch('/evaluate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pwd })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('reportTimestamp').innerHTML = `<strong>Generated:</strong> ${new Date().toLocaleString()}`;
+                
+                let masked = pwd.length <= 2 ? '**' : pwd.substring(0, 2) + '*'.repeat(Math.max(1, pwd.length - 4)) + pwd.substring(pwd.length - 2);
+                document.getElementById('repMaskedPw').textContent = `${masked} (${pwd.length} chars)`;
+                
+                document.getElementById('repScore').textContent = `${data.score} / 100`;
+                document.getElementById('repScore').style.color = data.color;
+                
+                document.getElementById('repVerdict').textContent = data.verdict;
+                document.getElementById('repVerdict').style.color = data.color;
+                
+                document.getElementById('repEntropy').textContent = `${data.entropy} bits`;
+                document.getElementById('repDictMatch').textContent = data.dict_message;
+                document.getElementById('repPatterns').textContent = data.pattern_summary;
+                document.getElementById('repCrackTime').textContent = data.attacker_profiles.high_gpu_time;
+                document.getElementById('repSuggestion').textContent = data.suggestion;
+            });
+        });
+    </script>
+</body>
+</html>
