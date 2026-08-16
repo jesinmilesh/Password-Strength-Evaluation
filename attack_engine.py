@@ -1,69 +1,40 @@
 import os
 import re
-import sqlite3
-from flask import g, has_app_context
+import database
 import pattern_detector
 import entropy
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_DIR = os.path.join(BASE_DIR, 'database')
-DB_PATH = os.path.join(DB_DIR, 'passwords.db')
 DATASETS_DIR = os.path.join(BASE_DIR, 'datasets')
 
 FALLBACK_RAM_SET = set()
-USE_SQLITE = False
 
-def init_attack_engine():
-    global FALLBACK_RAM_SET, USE_SQLITE
-    if os.path.exists(DB_PATH):
-        USE_SQLITE = True
-        print(f"Attack Engine: Using SQLite Indexed Database at {DB_PATH}")
-    else:
-        USE_SQLITE = False
-        print("Attack Engine: SQLite Database not found. Loading RAM Fallback...")
-        rf_path = os.path.join(DATASETS_DIR, 'high_risk_passwords.txt')
-        cp_path = os.path.join(DATASETS_DIR, 'common_passwords.txt')
-        for p in [rf_path, cp_path]:
-            if os.path.exists(p):
-                with open(p, 'r', encoding='utf-8', errors='ignore') as f:
-                    for line in f:
-                        pw = line.strip().lower()
-                        if pw:
-                            FALLBACK_RAM_SET.add(pw)
-        print(f"Attack Engine: Loaded {len(FALLBACK_RAM_SET):,} fallback records.")
+def init_fallback_set():
+    global FALLBACK_RAM_SET
+    rf_path = os.path.join(DATASETS_DIR, 'high_risk_passwords.txt')
+    cp_path = os.path.join(DATASETS_DIR, 'common_passwords.txt')
+    for p in [rf_path, cp_path]:
+        if os.path.exists(p):
+            with open(p, 'r', encoding='utf-8', errors='ignore') as f:
+                for line in f:
+                    pw = line.strip().lower()
+                    if pw:
+                        FALLBACK_RAM_SET.add(pw)
 
-init_attack_engine()
+init_fallback_set()
 
-def get_db():
-    if has_app_context():
-        if 'db' not in g:
-            g.db = sqlite3.connect(DB_PATH)
-            g.db.row_factory = sqlite3.Row
-        return g.db
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def password_exists_in_db(password):
-    """Step 3 – SQLite Lookup Engine (<100ms response time)."""
+def password_exists(password):
+    """Step 3 – Threat Database Lookup (<100ms response time)."""
     pw_lower = password.strip().lower()
     if not pw_lower:
         return False
 
-    if USE_SQLITE:
-        try:
-            db = get_db()
-            cursor = db.cursor()
-            cursor.execute("SELECT 1 FROM passwords WHERE password = ? LIMIT 1", (pw_lower,))
-            found = cursor.fetchone() is not None
-            if not has_app_context():
-                db.close()
-            return found
-        except Exception as e:
-            print(f"SQLite Lookup Error: {e}")
-            return pw_lower in FALLBACK_RAM_SET
-    else:
-        return pw_lower in FALLBACK_RAM_SET
+    # First attempt database indexed query
+    if database.check_password_in_corpus(pw_lower):
+        return True
+
+    # Fallback if database record not present
+    return pw_lower in FALLBACK_RAM_SET
 
 def preprocess_password(password):
     """
@@ -100,7 +71,7 @@ def check_dictionary_match(password):
     """Step 3 – Dictionary & Breach Matching."""
     pw_lower = password.lower()
 
-    if password_exists_in_db(pw_lower):
+    if password_exists(pw_lower):
         return True, pw_lower, f"CRITICAL MATCH: Exact match found in Threat Database Corpus ({password})"
 
     # Check root word extract (e.g. Summer in Summer2024!)
@@ -182,6 +153,9 @@ def evaluate_password_workflow(password):
     if pattern_summary and pattern_summary != "No predictable structural patterns detected.":
         explanation += f"Structure match: {pattern_summary}. "
     explanation += f"High-end GPU crack estimate: {attacker['high_gpu_time']}."
+
+    # Log evaluation anonymously into database/logs.db (NEVER log password!)
+    database.log_evaluation_anonymous(final_score, verdict, is_dict, entropy_val)
 
     return {
         "step1": {"valid": True, "message": "Password received for evaluation."},

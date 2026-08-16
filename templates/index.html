@@ -7,9 +7,9 @@
     
     <!-- Meta SEO -->
     <meta name="description" content="Real-time threat evaluation platform assessing passwords against modern attack vectors including 30+ Million global threat intelligence breach matching, pattern masks, Shannon entropy, and multi-GPU crack estimates.">
-    <meta name="keywords" content="cybersecurity, password evaluation, threat intelligence, brute force, breach detection, global breach corpus, pattern analysis, zxcvbn, entropy">
+    <meta name="keywords" content="cybersecurity, password evaluation, threat intelligence, brute force, breach detection, global breach corpus, pattern analysis, entropy">
     
-    <!-- CSS, Icons & Chart.js -->
+    <!-- CSS, Icons & Visualization Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -68,6 +68,16 @@
         .tracker-divider.active {
             background: var(--neon-green);
         }
+        .edu-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.3s ease;
+        }
+        .edu-card:hover {
+            border-color: var(--neon-blue);
+        }
     </style>
 </head>
 <body>
@@ -92,18 +102,18 @@
 
             <div class="status-badge">
                 <span class="pulse-dot"></span>
-                <span>SQLITE THREAT CORPUS ENGINE: ACTIVE</span>
+                <span>REAL-TIME THREAT INTELLIGENCE ENGINE: ACTIVE</span>
             </div>
         </header>
 
         <!-- HERO / LANDING SECTION -->
         <section class="hero-section" id="hero">
             <div class="hero-tag">
-                <i class="fas fa-database"></i> SQLITE INDEXED CORPUS: 30+ MILLION RECORDS
+                <i class="fas fa-database"></i> INDEXED THREAT CORPUS: 30+ MILLION RECORDS
             </div>
             <h2 class="hero-title">Password Strength Evaluation<br>Based on Modern Attack Techniques</h2>
             <p class="hero-subtitle">
-                Traditional password checkers rely on static rule sets (e.g., minimum 8 chars, 1 uppercase, 1 symbol) which create a false sense of security. This platform implements the Proposed System Workflow—evaluating passwords through 6 real-time attack stages: Input, Preprocessing, SQLite Dictionary Lookup, Pattern & Mask Analysis, Shannon Entropy, and Multi-Hardware Crack Time Estimation.
+                Traditional password checkers rely on static rule sets (e.g., minimum 8 chars, 1 uppercase, 1 symbol) which create a false sense of security. This platform implements the Proposed System Workflow—evaluating passwords through 6 real-time attack stages: Input, Preprocessing, Breach Dictionary Lookup, Pattern & Mask Analysis, Shannon Entropy, and Multi-Hardware Crack Time Estimation.
             </p>
             <div class="hero-actions">
                 <a href="#evaluator" class="btn-cyber">
@@ -111,6 +121,9 @@
                 </a>
                 <a href="#statistics" class="btn-cyber-outline">
                     <i class="fas fa-chart-pie"></i> Dataset Statistics
+                </a>
+                <a href="#education" class="btn-sec-action" style="text-decoration: none;">
+                    <i class="fas fa-graduation-cap"></i> Attack Vectors
                 </a>
             </div>
         </section>
@@ -153,7 +166,7 @@
             </div>
         </div>
 
-        <!-- STEP 8: DATASET STATISTICS CARD -->
+        <!-- DATASET STATISTICS CARD -->
         <section style="margin-bottom: 35px;" id="statistics">
             <div class="glass-card animated-border">
                 <div class="card-header">
@@ -224,7 +237,7 @@
                             <tr>
                                 <td><strong>Breach Check</strong></td>
                                 <td><span style="color: var(--neon-red);">No breach check</span> (Allows weak terms)</td>
-                                <td><span style="color: var(--neon-green);">Indexed SQLite Threat Database Matching</span></td>
+                                <td><span style="color: var(--neon-green);">Indexed Threat Database Matching</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Feedback Quality</strong></td>
@@ -270,7 +283,7 @@
                     <div class="card-title">
                         <i class="fas fa-terminal"></i> Enter Password for Real-Time Threat Analysis
                     </div>
-                    <span class="mono" style="font-size: 12px; color: var(--neon-blue);">INDEXED DB SEARCH (<100 ms)</span>
+                    <span class="mono" style="font-size: 12px; color: var(--neon-blue);">THREAT CORPUS SCAN (<100 ms)</span>
                 </div>
 
                 <!-- Input Field -->
@@ -323,7 +336,7 @@
                         <div class="metric-label">Step 1 Status</div>
                         <div style="font-size: 13px; color: var(--neon-green);" id="step1Status">Awaiting password input...</div>
 
-                        <div class="metric-label" style="margin-top: 12px;">Step 2 Preprocessing Live breakdown</div>
+                        <div class="metric-label" style="margin-top: 12px;">Step 2 Preprocessing Breakdown</div>
                         <table class="cyber-table" style="margin-top: 8px; font-size: 12px;">
                             <thead>
                                 <tr><th>Check</th><th>Result</th></tr>
@@ -343,11 +356,11 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <div class="card-title" style="font-size: 14px;">
-                            <i class="fas fa-book"></i> Step 3 — SQLite Dictionary / Breach Match
+                            <i class="fas fa-book"></i> Step 3 — Breach Database & Dictionary Scan
                         </div>
                     </div>
                     <div class="metric-box" style="margin-top: 0;">
-                        <div class="metric-label">SQLite Search Output</div>
+                        <div class="metric-label">Threat Database Scan Result</div>
                         <div style="font-size: 13px; color: #fff;" id="step3Result">No dictionary match.</div>
                         <div class="risk-tag risk-safe" id="step3Tag" style="margin-top: 10px;">NO DICTIONARY MATCH</div>
                     </div>
@@ -370,11 +383,11 @@
                 </div>
             </div>
 
-            <!-- STEP 5 & 6: ATTACKER HARDWARE PROFILES & CHART.JS GRAPH -->
+            <!-- STEP 5 & 6: ATTACKER HARDWARE PROFILES & VISUALIZATION -->
             <div class="glass-card animated-border" style="margin-bottom: 35px;">
                 <div class="card-header">
                     <div class="card-title">
-                        <i class="fas fa-server"></i> Step 5 — Entropy & Multi-Hardware Crack Time (Chart.js)
+                        <i class="fas fa-server"></i> Step 5 — Entropy & Multi-Hardware Crack Time
                     </div>
                 </div>
 
@@ -408,10 +421,10 @@
                         </table>
                     </div>
 
-                    <!-- Chart.js Graph Canvas -->
+                    <!-- Visualization Canvas -->
                     <div>
                         <h4 style="color: var(--neon-blue); margin-bottom: 12px; font-size: 14px;">
-                            Hardware Crack Time Comparison (Chart.js)
+                            Attacker Profile Crack-Time Visualization
                         </h4>
                         <div style="height: 180px; position: relative;">
                             <canvas id="crackTimeChart"></canvas>
@@ -461,12 +474,101 @@
             </div>
         </section>
 
+        <!-- PHASE 8: REAL-WORLD EDUCATIONAL ATTACK VECTORS -->
+        <section style="margin-bottom: 35px;" id="education">
+            <h3 style="margin-bottom: 20px; font-size: 18px; color: var(--neon-blue);">
+                <i class="fas fa-shield-virus"></i> Real-World Offensive Attack Vectors & Educational Breakdown
+            </h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                <!-- 1. Dictionary Attack -->
+                <div class="edu-card">
+                    <h4 style="color: var(--neon-red); font-size: 15px; margin-bottom: 8px;">
+                        <i class="fas fa-book-dead"></i> 1. Dictionary Attack
+                    </h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>How Attackers Use It:</strong> Attackers test wordlists containing millions of leaked breach passwords (RockYou, SecLists) against authentication targets.
+                    </p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>Why It Is Dangerous:</strong> Completely bypasses mathematical entropy calculations; even long passwords are cracked instantly if listed in breach corpus databases.
+                    </p>
+                    <div style="font-size: 11px; color: var(--neon-blue); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                        <i class="fas fa-shield-alt"></i> Evaluated against 30.4M indexed breach records.
+                    </div>
+                </div>
+
+                <!-- 2. Brute Force Attack -->
+                <div class="edu-card">
+                    <h4 style="color: var(--neon-yellow); font-size: 15px; margin-bottom: 8px;">
+                        <i class="fas fa-hammer"></i> 2. Brute Force Attack
+                    </h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>How Attackers Use It:</strong> Systematically testing all character combinations (a-z, A-Z, 0-9, symbols) sequentially until matching the password hash.
+                    </p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>Why It Is Dangerous:</strong> High-end GPU rigs can test hundreds of billions of combinations per second. Short passwords (<10 chars) collapse rapidly.
+                    </p>
+                    <div style="font-size: 11px; color: var(--neon-green); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                        <i class="fas fa-shield-alt"></i> Defense: Use passphrases with 14+ characters.
+                    </div>
+                </div>
+
+                <!-- 3. Hybrid Attack -->
+                <div class="edu-card">
+                    <h4 style="color: var(--neon-orange); font-size: 15px; margin-bottom: 8px;">
+                        <i class="fas fa-cogs"></i> 3. Hybrid Attack
+                    </h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>How Attackers Use It:</strong> Combines dictionary words with automated rule modifications—prepending numbers, appending calendar years, and leetspeak symbols.
+                    </p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>Why It Is Dangerous:</strong> Cracks passwords like <code>Summer2024!</code> or <code>P@ssword123</code> instantly by mutating base dictionary words.
+                    </p>
+                    <div style="font-size: 11px; color: var(--neon-blue); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                        <i class="fas fa-shield-alt"></i> Evaluated in Step 4 Pattern Analysis.
+                    </div>
+                </div>
+
+                <!-- 4. Credential Stuffing -->
+                <div class="edu-card">
+                    <h4 style="color: var(--neon-purple); font-size: 15px; margin-bottom: 8px;">
+                        <i class="fas fa-users-slash"></i> 4. Credential Stuffing
+                    </h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>How Attackers Use It:</strong> Automated bots attempt email/password pairs stolen from prior data breaches across unrelated enterprise portals.
+                    </p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>Why It Is Dangerous:</strong> Reusing passwords makes multiple personal accounts vulnerable when a single service suffers a breach.
+                    </p>
+                    <div style="font-size: 11px; color: var(--neon-green); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                        <i class="fas fa-shield-alt"></i> Defense: Enforce unique passwords per account.
+                    </div>
+                </div>
+
+                <!-- 5. Mask Attack -->
+                <div class="edu-card">
+                    <h4 style="color: var(--neon-red); font-size: 15px; margin-bottom: 8px;">
+                        <i class="fas fa-masks-theater"></i> 5. Mask Attack
+                    </h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>How Attackers Use It:</strong> Targets human behavioral patterns using structural masks, such as <code>?u?l?l?l?l?d?d?d?d?s</code> (Uppercase + 4 Lowercase + 4 Digits + Symbol).
+                    </p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        <strong>Why It Is Dangerous:</strong> Reduces brute force search spaces by orders of magnitude by testing predictable character structures.
+                    </p>
+                    <div style="font-size: 11px; color: var(--neon-yellow); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
+                        <i class="fas fa-shield-alt"></i> Evaluated via structural mask detection.
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- PASSWORD GENERATOR SECTION -->
         <section class="generator-section" id="generator">
             <div class="glass-card animated-border">
                 <div class="card-header">
                     <div class="card-title">
-                        <i class="fas fa-key"></i> Built-in Cryptographic Password Generator
+                        <i class="fas fa-key"></i> Cryptographic Password Generator
                     </div>
                     <button class="btn-cyber" id="genActionBtn" style="padding: 8px 18px; font-size: 12px;">
                         <i class="fas fa-sync-alt"></i> Generate Password
@@ -505,7 +607,7 @@
         <!-- FOOTER -->
         <footer class="footer">
             <p>Password Strength Evaluation Based on Modern Attack Techniques</p>
-            <p style="margin-top: 5px; color: var(--neon-blue);">Proposed System Workflow | SQLite Indexed Search | Chart.js</p>
+            <p style="margin-top: 5px; color: var(--neon-blue);">Real-Time SOC Threat Evaluation Engine | 30+ Million Threat Records</p>
         </footer>
     </div>
 
