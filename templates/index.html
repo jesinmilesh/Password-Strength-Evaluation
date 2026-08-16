@@ -6,7 +6,7 @@
     <title>Password Strength Evaluation Based on Modern Attack Techniques</title>
     
     <!-- Meta SEO -->
-    <meta name="description" content="Real-time threat evaluation platform assessing passwords against modern attack vectors including 30.4 Million global threat intelligence breach matching, pattern masks, Shannon entropy, and multi-GPU crack estimates.">
+    <meta name="description" content="Real-time threat evaluation platform assessing passwords against modern attack vectors including 30+ Million global threat intelligence breach matching, pattern masks, Shannon entropy, and multi-GPU crack estimates.">
     <meta name="keywords" content="cybersecurity, password evaluation, threat intelligence, brute force, breach detection, global breach corpus, pattern analysis, zxcvbn, entropy">
     
     <!-- CSS, Icons & Chart.js -->
@@ -29,39 +29,83 @@
                 <div>
                     <h1 class="brand-title" style="font-size: 20px;">PASSWORD STRENGTH EVALUATION</h1>
                     <p class="mono" style="font-size: 11px; color: var(--neon-blue);">
-                        BASED ON MODERN ATTACK TECHNIQUES | 30.4M THREAT RECORDS
+                        BASED ON MODERN ATTACK TECHNIQUES | 30+ MILLION THREAT RECORDS
                     </p>
                 </div>
             </div>
 
             <div class="status-badge">
                 <span class="pulse-dot"></span>
-                <span>ATTACK ENGINE & 30.4M THREAT DATASETS: ACTIVE</span>
+                <span>SQLITE SEARCH ENGINE & THREAT CORPUS: ACTIVE</span>
             </div>
         </header>
 
         <!-- HERO / LANDING SECTION -->
         <section class="hero-section" id="hero">
             <div class="hero-tag">
-                <i class="fas fa-database"></i> TRAINED ON 30.4 MILLION THREAT INTEL RECORDS
+                <i class="fas fa-database"></i> INDEXED THREAT CORPUS: 30+ MILLION RECORDS
             </div>
             <h2 class="hero-title">Password Strength Evaluation<br>Based on Modern Attack Techniques</h2>
             <p class="hero-subtitle">
-                Traditional password checkers rely on static rule sets (e.g., minimum 8 chars, 1 uppercase, 1 symbol) which create a false sense of security. This platform replaces outdated static rules with offensive threat modeling—evaluating passwords against a 30.4 Million record threat intelligence corpus (`global_breach_corpus.txt` + `extended_threat_corpus.txt` + `high_risk_passwords.txt`), structural pattern masks, Shannon entropy, and multi-hardware attacker capabilities.
+                Traditional password checkers rely on static rule sets (e.g., minimum 8 chars, 1 uppercase, 1 symbol) which create a false sense of security. This platform replaces outdated static rules with offensive threat modeling—evaluating passwords against a 30+ Million record indexed SQLite threat intelligence corpus, structural pattern masks, Shannon entropy, and multi-hardware attacker capabilities.
             </p>
             <div class="hero-actions">
                 <a href="#evaluator" class="btn-cyber">
                     <i class="fas fa-play"></i> Start Evaluation
                 </a>
-                <a href="#comparison" class="btn-cyber-outline">
-                    <i class="fas fa-balance-scale"></i> Traditional vs Modern
+                <a href="#statistics" class="btn-cyber-outline">
+                    <i class="fas fa-chart-pie"></i> Dataset Statistics
                 </a>
+            </div>
+        </section>
+
+        <!-- STEP 8: DATASET STATISTICS CARD -->
+        <section style="margin-bottom: 35px;" id="statistics">
+            <div class="glass-card animated-border">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-database"></i> Threat Intelligence Corpus & Dictionary Statistics
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="cyber-table">
+                        <thead>
+                            <tr>
+                                <th>Dataset Category Item</th>
+                                <th style="color: var(--neon-blue);">Corpus Count / Capacity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Password Corpus</strong></td>
+                                <td><span style="font-weight: 700; color: var(--neon-green);">30+ Million</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dictionary Lists</strong></td>
+                                <td><span style="font-weight: 700; color: var(--neon-blue);">2</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Keyboard Patterns</strong></td>
+                                <td><span style="font-weight: 700; color: var(--neon-yellow);">500+</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Names</strong></td>
+                                <td><span style="font-weight: 700; color: var(--neon-purple);">100,000</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Common Words</strong></td>
+                                <td><span style="font-weight: 700; color: var(--neon-orange);">370,000</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
         <!-- SYSTEM ARCHITECTURE COMPARISON CARD -->
         <section style="margin-bottom: 35px;" id="comparison">
-            <div class="glass-card animated-border">
+            <div class="glass-card">
                 <div class="card-header">
                     <div class="card-title">
                         <i class="fas fa-shield-halved"></i> System Architecture: Traditional vs Modern Threat Modeling
@@ -86,7 +130,7 @@
                             <tr>
                                 <td><strong>Breach Check</strong></td>
                                 <td><span style="color: var(--neon-red);">No breach check</span> (Allows weak terms)</td>
-                                <td><span style="color: var(--neon-green);">30.4M Global Threat Database Matching</span></td>
+                                <td><span style="color: var(--neon-green);">Indexed SQLite Threat Database Matching</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Feedback Quality</strong></td>
@@ -132,7 +176,7 @@
                     <div class="card-title">
                         <i class="fas fa-terminal"></i> Enter Password for Real-Time Threat Analysis
                     </div>
-                    <span class="mono" style="font-size: 12px; color: var(--neon-blue);">TRAINED DATASET: 30.4M RECORDS</span>
+                    <span class="mono" style="font-size: 12px; color: var(--neon-blue);">INDEXED DB SEARCH (0.01 ms)</span>
                 </div>
 
                 <!-- Input Field -->
@@ -199,11 +243,11 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <div class="card-title" style="font-size: 14px;">
-                            <i class="fas fa-book"></i> Step 3 — Trained 30.4M Global Threat Lookup
+                            <i class="fas fa-book"></i> Step 3 — Indexed SQLite Threat Corpus Search
                         </div>
                     </div>
                     <div class="metric-box" style="margin-top: 0;">
-                        <div class="metric-label">Dataset Match Result (30,441,053 Records)</div>
+                        <div class="metric-label">Dataset Search Status</div>
                         <div style="font-size: 13px; color: #fff;" id="step3Result">No input password provided.</div>
                         <div class="risk-tag risk-safe" id="step3Tag" style="margin-top: 10px;">NO BREACH MATCH</div>
                     </div>
@@ -360,7 +404,7 @@
         <!-- FOOTER -->
         <footer class="footer">
             <p>Password Strength Evaluation Based on Modern Attack Techniques</p>
-            <p style="margin-top: 5px; color: var(--neon-blue);">Dataset Trained: 30.4 Million Global Threat Records | Flask, zxcvbn & Chart.js</p>
+            <p style="margin-top: 5px; color: var(--neon-blue);">Corpus Capacity: 30+ Million Records | Flask, SQLite, zxcvbn & Chart.js</p>
         </footer>
     </div>
 
