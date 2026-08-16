@@ -1,279 +1,81 @@
-/* ==========================================================================
-   CYBER SHIELD - REAL-TIME JAVASCRIPT ENGINE & BUTTON EVENT HANDLERS
-   ========================================================================== */
+/**
+ * Password Strength Evaluation Based on Modern Attack Techniques
+ * JavaScript Controller — 6-Step Proposed System Workflow Execution
+ */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM Element Declarations
+    // DOM Element References
     const passwordInput = document.getElementById('passwordInput');
     const togglePwdBtn = document.getElementById('togglePwdBtn');
-    const copyPwdBtn = document.getElementById('copyPwdBtn');
     const evaluateBtn = document.getElementById('evaluateBtn');
+    const copyPwdBtn = document.getElementById('copyPwdBtn');
     const reportBtn = document.getElementById('reportBtn');
-
-    // Strength Meter & Header
-    const strengthVal = document.getElementById('strengthVal');
     const progressFill = document.getElementById('progressFill');
+    const strengthVal = document.getElementById('strengthVal');
 
-    // Dashboard HUD Cards
+    // HUD Summary Cards
     const hudScore = document.getElementById('hudScore');
     const hudEntropy = document.getElementById('hudEntropy');
     const hudCrackTime = document.getElementById('hudCrackTime');
     const hudRisk = document.getElementById('hudRisk');
 
-    // Workflow Pipeline Elements
+    // Step Display Elements
     const step1Status = document.getElementById('step1Status');
     const step2Length = document.getElementById('step2Length');
-    const step2Categories = document.getElementById('step2Categories');
+    const step2Upper = document.getElementById('step2Upper');
+    const step2Lower = document.getElementById('step2Lower');
+    const step2Digits = document.getElementById('step2Digits');
+    const step2Symbols = document.getElementById('step2Symbols');
+
     const step3Result = document.getElementById('step3Result');
     const step3Tag = document.getElementById('step3Tag');
     const step4Pattern = document.getElementById('step4Pattern');
+    const step4Badges = document.getElementById('step4Badges');
 
-    // Hardware Profiles Table
     const cpuTime = document.getElementById('cpuTime');
     const gpuTime = document.getElementById('gpuTime');
     const highGpuTime = document.getElementById('highGpuTime');
 
-    // Step 6 Output Result Table
     const outScore = document.getElementById('outScore');
     const outVerdict = document.getElementById('outVerdict');
     const outPattern = document.getElementById('outPattern');
     const outCrackTime = document.getElementById('outCrackTime');
     const outSuggestion = document.getElementById('outSuggestion');
 
-    // Password Generator Controls
+    // Generator Elements
+    const genActionBtn = document.getElementById('genActionBtn');
     const genLengthSlider = document.getElementById('genLengthSlider');
     const genLengthVal = document.getElementById('genLengthVal');
     const genUpper = document.getElementById('genUpper');
     const genLower = document.getElementById('genLower');
     const genNumbers = document.getElementById('genNumbers');
     const genSymbols = document.getElementById('genSymbols');
-    const genActionBtn = document.getElementById('genActionBtn');
 
-    // Chart.js instance
     let crackChart = null;
 
-    // ----------------------------------------------------------------------
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    initCrackTimeChart([0.1, 0.1, 0.1]);
-
-    if (passwordInput && passwordInput.value) {
-        handleEvaluatePassword(passwordInput.value);
-    }
-
-    // ----------------------------------------------------------------------
-    // DEDICATED BUTTON HANDLERS & EVENT LISTENERS
-    // ----------------------------------------------------------------------
-
-    // 1. Real-time Typing Handler (0ms Latency Evaluation)
-    if (passwordInput) {
-        passwordInput.addEventListener('input', (e) => {
-            handleEvaluatePassword(e.target.value);
-            updateReportLink(e.target.value);
-        });
-    }
-
-    // 2. Evaluate Password Button Handler
-    if (evaluateBtn && passwordInput) {
-        evaluateBtn.addEventListener('click', () => {
-            handleEvaluatePassword(passwordInput.value);
-            showToast("Password threat evaluation executed!");
-        });
-    }
-
-    // 3. Toggle Password Visibility Handler
-    if (togglePwdBtn && passwordInput) {
-        togglePwdBtn.addEventListener('click', () => {
-            handleTogglePassword();
-        });
-    }
-
-    function handleTogglePassword() {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-        togglePwdBtn.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
-        showToast(isPassword ? "Password visible" : "Password hidden");
-    }
-
-    // 4. Copy Password Button Handler
-    if (copyPwdBtn && passwordInput) {
-        copyPwdBtn.addEventListener('click', () => {
-            handleCopyPassword();
-        });
-    }
-
-    function handleCopyPassword() {
-        if (!passwordInput.value) {
-            showToast('Password field is empty!');
-            return;
-        }
-        navigator.clipboard.writeText(passwordInput.value).then(() => {
-            showToast('Password copied to clipboard!');
-        }).catch(() => {
-            showToast('Failed to copy password.');
-        });
-    }
-
-    // 5. Generator Length Slider Handler
-    if (genLengthSlider && genLengthVal) {
-        genLengthSlider.addEventListener('input', (e) => {
-            genLengthVal.textContent = e.target.value;
-        });
-    }
-
-    // 6. Generate Password Button Handler
-    if (genActionBtn) {
-        genActionBtn.addEventListener('click', () => {
-            handleGeneratePassword();
-        });
-    }
-
-    function handleGeneratePassword() {
-        const length = genLengthSlider ? genLengthSlider.value : 16;
-        const uppercase = genUpper ? genUpper.checked : true;
-        const lowercase = genLower ? genLower.checked : true;
-        const numbers = genNumbers ? genNumbers.checked : true;
-        const symbols = genSymbols ? genSymbols.checked : true;
-
-        fetch(`/generate?length=${length}&uppercase=${uppercase}&lowercase=${lowercase}&numbers=${numbers}&symbols=${symbols}`)
-            .then(res => res.json())
-            .then(data => {
-                if (passwordInput) {
-                    passwordInput.value = data.password;
-                    passwordInput.type = 'text';
-                    if (togglePwdBtn) togglePwdBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
-                    updateUI(data.evaluation);
-                    updateReportLink(data.password);
-                    showToast('Generated secure random password!');
-                }
-            })
-            .catch(err => console.error("Generation error:", err));
-    }
-
-    // 7. Update Report Link URL
-    function updateReportLink(pwd) {
-        if (reportBtn) {
-            reportBtn.href = `/result?pwd=${encodeURIComponent(pwd)}`;
-        }
-    }
-
-    // ----------------------------------------------------------------------
-    // CORE EVALUATION & UI UPDATE LOGIC
-    // ----------------------------------------------------------------------
-    function handleEvaluatePassword(pwd) {
-        fetch('/evaluate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: pwd })
-        })
-        .then(res => res.json())
-        .then(data => {
-            updateUI(data);
-        })
-        .catch(err => console.error("Evaluation error:", err));
-    }
-
-    function updateUI(data) {
-        // 1. Progress Bar & Verdict Header
-        if (strengthVal) {
-            strengthVal.textContent = data.verdict;
-            strengthVal.style.color = data.color;
-        }
-
-        if (progressFill) {
-            progressFill.style.width = `${data.score}%`;
-            progressFill.style.backgroundColor = data.color;
-            progressFill.style.boxShadow = `0 0 15px ${data.color}`;
-        }
-
-        // 2. HUD Cards
-        if (hudScore) {
-            hudScore.textContent = `${data.score}/100`;
-            hudScore.style.color = data.color;
-        }
-        if (hudEntropy) hudEntropy.textContent = `${data.entropy} bits`;
-        if (hudCrackTime) hudCrackTime.textContent = data.attacker_profiles.high_gpu_time;
-        if (hudRisk) {
-            hudRisk.textContent = data.verdict;
-            hudRisk.style.color = data.color;
-        }
-
-        // 3. Step 1 & 2 Workflow
-        if (step1Status) step1Status.textContent = data.password_received || "Awaiting password input...";
-        if (step2Length) step2Length.textContent = `${data.preprocessing.length} Characters`;
-        if (step2Categories) step2Categories.textContent = data.preprocessing.category_summary;
-
-        // 4. Step 3 Dictionary Match
-        if (step3Result) {
-            step3Result.textContent = data.dict_message;
-        }
-        if (step3Tag) {
-            if (data.dict_match) {
-                step3Tag.textContent = "THREAT DATASET MATCH DETECTED";
-                step3Tag.className = "risk-tag risk-high";
-            } else {
-                step3Tag.textContent = "NO BREACH MATCH";
-                step3Tag.className = "risk-tag risk-safe";
-            }
-        }
-
-        // 5. Step 4 Pattern Analysis
-        if (step4Pattern) {
-            step4Pattern.textContent = data.pattern_summary;
-        }
-
-        // 6. Step 5 Hardware Profiles Table
-        if (cpuTime) cpuTime.textContent = data.attacker_profiles.cpu_time;
-        if (gpuTime) gpuTime.textContent = data.attacker_profiles.gpu_time;
-        if (highGpuTime) highGpuTime.textContent = data.attacker_profiles.high_gpu_time;
-
-        // Update Chart.js graph
-        updateCrackTimeChart([
-            data.attacker_profiles.cpu_seconds,
-            data.attacker_profiles.gpu_seconds,
-            data.attacker_profiles.high_gpu_seconds
-        ]);
-
-        // 7. Step 6 Verdict Output Table
-        if (outScore) {
-            outScore.textContent = `${data.score} / 100`;
-            outScore.style.color = data.color;
-        }
-        if (outVerdict) {
-            outVerdict.textContent = data.verdict;
-            outVerdict.style.backgroundColor = `${data.color}22`;
-            outVerdict.style.borderColor = data.color;
-            outVerdict.style.color = data.color;
-        }
-        if (outPattern) outPattern.textContent = data.pattern_summary;
-        if (outCrackTime) outCrackTime.textContent = data.attacker_profiles.summary_display;
-        if (outSuggestion) outSuggestion.textContent = data.suggestion;
-    }
-
-    // Chart.js Initialization
-    function initCrackTimeChart(initialData) {
-        const ctx = document.getElementById('crackTimeChart');
-        if (!ctx) return;
-
+    // ------------------------------------------------------------------
+    // CHART.JS INITIALIZATION (Step 5 Crack Time Graph)
+    // ------------------------------------------------------------------
+    function initChart() {
+        const ctx = document.getElementById('crackTimeChart').getContext('2d');
         crackChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Single CPU', 'Consumer GPU', 'High-End GPU'],
+                labels: ['Single CPU', 'Consumer GPU', 'High-End Cluster'],
                 datasets: [{
-                    label: 'Est. Crack Time (Seconds)',
-                    data: initialData,
+                    label: 'Estimated Crack Time (log scale)',
+                    data: [1, 1, 1],
                     backgroundColor: [
-                        'rgba(0, 240, 255, 0.6)',
-                        'rgba(255, 153, 0, 0.6)',
-                        'rgba(255, 51, 102, 0.6)'
+                        'rgba(0, 240, 255, 0.7)',
+                        'rgba(255, 204, 0, 0.7)',
+                        'rgba(255, 51, 102, 0.7)'
                     ],
                     borderColor: [
                         '#00f0ff',
-                        '#ff9900',
+                        '#ffcc00',
                         '#ff3366'
                     ],
-                    borderWidth: 1.5,
-                    borderRadius: 4
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -281,13 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 maintainAspectRatio: false,
                 scales: {
                     y: {
-                        type: 'logarithmic',
-                        ticks: { color: '#94a3b8' },
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#94a3b8' }
                     },
                     x: {
-                        ticks: { color: '#f1f5f9' },
-                        grid: { display: false }
+                        grid: { display: False },
+                        ticks: { color: '#94a3b8' }
                     }
                 },
                 plugins: {
@@ -297,32 +99,236 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function updateCrackTimeChart(newData) {
-        if (!crackChart) return;
-        const cleanData = newData.map(val => Math.max(0.1, val));
-        crackChart.data.datasets[0].data = cleanData;
-        crackChart.update();
+    if (document.getElementById('crackTimeChart')) {
+        initChart();
     }
 
-    // Toast Notifications
-    function showToast(message) {
-        let toastContainer = document.querySelector('.toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.className = 'toast-container';
-            document.body.appendChild(toastContainer);
+    // ------------------------------------------------------------------
+    // STEP TRACKER ANIMATION (Steps 1–6)
+    // ------------------------------------------------------------------
+    function updateWorkflowTracker(stepIndex) {
+        for (let i = 1; i <= 6; i++) {
+            const stepEl = document.getElementById(`tstep${i}`);
+            const badgeEl = document.getElementById(`sbadge${i}`);
+            const divEl = document.getElementById(`tdiv${i}`);
+
+            if (i < stepIndex) {
+                stepEl.className = 'tracker-step completed';
+                badgeEl.innerHTML = '<i class="fas fa-check"></i>';
+                if (divEl) divEl.className = 'tracker-divider active';
+            } else if (i === stepIndex) {
+                stepEl.className = 'tracker-step active';
+                badgeEl.textContent = i;
+                if (divEl) divEl.className = 'tracker-divider';
+            } else {
+                stepEl.className = 'tracker-step';
+                badgeEl.textContent = i;
+                if (divEl) divEl.className = 'tracker-divider';
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // REAL-TIME PASSWORD EVALUATION FUNCTION
+    // ------------------------------------------------------------------
+    function evaluatePasswordRealtime() {
+        const pwd = passwordInput.value;
+
+        if (!pwd) {
+            updateWorkflowTracker(1);
+            resetUI();
+            return;
         }
 
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerHTML = `<i class="fas fa-info-circle" style="color: var(--neon-blue);"></i> <span>${message}</span>`;
-        toastContainer.appendChild(toast);
+        // Trigger Step 1 & 2 locally before API response
+        updateWorkflowTracker(2);
+        step1Status.textContent = `Password received (${pwd.length} chars).`;
+        step2Length.textContent = pwd.length;
+        step2Upper.textContent = (pwd.match(/[A-Z]/g) || []).length;
+        step2Lower.textContent = (pwd.match(/[a-z]/g) || []).length;
+        step2Digits.textContent = (pwd.match(/\d/g) || []).length;
+        step2Symbols.textContent = (pwd.match(/[^a-zA-Z0-9]/g) || []).length;
 
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(20px)';
-            toast.style.transition = 'all 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        fetch('/evaluate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pwd })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Animate workflow steps to step 6
+            updateWorkflowTracker(6);
+            updateUI(data);
+        })
+        .catch(err => {
+            console.error('Evaluation API error:', err);
+        });
+    }
+
+    function updateUI(data) {
+        // HUD Metrics
+        hudScore.textContent = `${data.score}/100`;
+        hudScore.style.color = data.color;
+
+        hudEntropy.textContent = `${data.entropy} bits`;
+        hudCrackTime.textContent = data.attacker_profiles.high_gpu_time;
+        hudCrackTime.style.color = data.color;
+
+        hudRisk.textContent = data.verdict;
+        hudRisk.style.color = data.color;
+
+        // Progress Fill
+        progressFill.style.width = `${data.score}%`;
+        progressFill.style.backgroundColor = data.color;
+        strengthVal.textContent = data.verdict;
+        strengthVal.style.color = data.color;
+
+        // Step 3 Dictionary Match
+        step3Result.textContent = data.dict_message;
+        if (data.dict_match) {
+            step3Tag.className = 'risk-tag risk-high';
+            step3Tag.textContent = 'DICTIONARY MATCH FOUND';
+        } else {
+            step3Tag.className = 'risk-tag risk-safe';
+            step3Tag.textContent = 'NO DICTIONARY MATCH';
+        }
+
+        // Step 4 Pattern Analysis
+        step4Pattern.textContent = data.pattern_summary;
+        if (step4Badges) {
+            step4Badges.innerHTML = '';
+            if (data.step4 && data.step4.risks && data.step4.risks.length > 0) {
+                data.step4.risks.forEach(r => {
+                    const b = document.createElement('span');
+                    b.className = 'risk-tag risk-high';
+                    b.style.fontSize = '11px';
+                    b.textContent = r.type;
+                    step4Badges.appendChild(b);
+                });
+            }
+        }
+
+        // Step 5 Hardware Profiles
+        cpuTime.textContent = data.attacker_profiles.cpu_time;
+        gpuTime.textContent = data.attacker_profiles.gpu_time;
+        highGpuTime.textContent = data.attacker_profiles.high_gpu_time;
+
+        // Update Chart
+        if (crackChart) {
+            const cpuSec = Math.max(1, Math.min(100, Math.log10(data.attacker_profiles.cpu_seconds + 1) * 20));
+            const gpuSec = Math.max(1, Math.min(100, Math.log10(data.attacker_profiles.gpu_seconds + 1) * 20));
+            const hgSec = Math.max(1, Math.min(100, Math.log10(data.attacker_profiles.high_gpu_seconds + 1) * 20));
+
+            crackChart.data.datasets[0].data = [cpuSec, gpuSec, hgSec];
+            crackChart.update();
+        }
+
+        // Step 6 Output Box
+        outScore.textContent = `${data.score} / 100`;
+        outScore.style.color = data.color;
+
+        outVerdict.textContent = data.verdict;
+        outVerdict.className = data.score > 70 ? 'risk-tag risk-safe' : (data.score > 40 ? 'risk-tag risk-medium' : 'risk-tag risk-high');
+
+        outPattern.textContent = data.pattern_summary;
+        outCrackTime.textContent = data.attacker_profiles.high_gpu_time;
+        outSuggestion.textContent = data.suggestion;
+
+        // Update Report URL link
+        if (reportBtn) {
+            reportBtn.href = `/result?pwd=${encodeURIComponent(passwordInput.value)}`;
+        }
+    }
+
+    function resetUI() {
+        hudScore.textContent = '0/100';
+        hudEntropy.textContent = '0 bits';
+        hudCrackTime.textContent = 'Instant';
+        hudRisk.textContent = 'Very Weak';
+
+        progressFill.style.width = '0%';
+        strengthVal.textContent = 'Very Weak';
+
+        step1Status.textContent = 'Awaiting password input...';
+        step2Length.textContent = '0';
+        step2Upper.textContent = '0';
+        step2Lower.textContent = '0';
+        step2Digits.textContent = '0';
+        step2Symbols.textContent = '0';
+
+        step3Result.textContent = 'No input password provided.';
+        step3Tag.className = 'risk-tag risk-safe';
+        step3Tag.textContent = 'NO DICTIONARY MATCH';
+
+        step4Pattern.textContent = 'No predictable structural patterns detected.';
+        if (step4Badges) step4Badges.innerHTML = '';
+
+        cpuTime.textContent = 'Instant';
+        gpuTime.textContent = 'Instant';
+        highGpuTime.textContent = 'Instant';
+
+        outScore.textContent = '0 / 100';
+        outVerdict.textContent = 'Very Weak';
+        outPattern.textContent = 'None';
+        outCrackTime.textContent = 'Instant';
+        outSuggestion.textContent = 'Enter a strong, unpredictable passphrase.';
+    }
+
+    // ------------------------------------------------------------------
+    // EVENT LISTENERS
+    // ------------------------------------------------------------------
+    if (passwordInput) {
+        passwordInput.addEventListener('input', evaluatePasswordRealtime);
+    }
+
+    if (evaluateBtn) {
+        evaluateBtn.addEventListener('click', evaluatePasswordRealtime);
+    }
+
+    if (togglePwdBtn) {
+        togglePwdBtn.addEventListener('click', () => {
+            const isPwd = passwordInput.type === 'password';
+            passwordInput.type = isPwd ? 'text' : 'password';
+            togglePwdBtn.innerHTML = isPwd ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+        });
+    }
+
+    if (copyPwdBtn) {
+        copyPwdBtn.addEventListener('click', () => {
+            if (!passwordInput.value) return;
+            navigator.clipboard.writeText(passwordInput.value).then(() => {
+                const orig = copyPwdBtn.innerHTML;
+                copyPwdBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => { copyPwdBtn.innerHTML = orig; }, 2000);
+            });
+        });
+    }
+
+    // Generator Actions
+    if (genLengthSlider) {
+        genLengthSlider.addEventListener('input', () => {
+            genLengthVal.textContent = genLengthSlider.value;
+        });
+    }
+
+    if (genActionBtn) {
+        genActionBtn.addEventListener('click', () => {
+            const params = new URLSearchParams({
+                length: genLengthSlider.value,
+                uppercase: genUpper.checked,
+                lowercase: genLower.checked,
+                numbers: genNumbers.checked,
+                symbols: genSymbols.checked
+            });
+
+            fetch(`/generate?${params.toString()}`)
+            .then(res => res.json())
+            .then(data => {
+                passwordInput.value = data.password;
+                passwordInput.type = 'text';
+                if (togglePwdBtn) togglePwdBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                evaluatePasswordRealtime();
+            });
+        });
     }
 });

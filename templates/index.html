@@ -13,6 +13,62 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* 6-Step Workflow Tracker Styling */
+        .tracker-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+        .tracker-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+        .tracker-step.active {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        .tracker-step.completed {
+            color: var(--neon-green);
+        }
+        .step-badge {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+        .tracker-step.completed .step-badge {
+            background: var(--neon-green);
+            color: #0b0f19;
+            border-color: var(--neon-green);
+        }
+        .tracker-divider {
+            flex-grow: 1;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 10px;
+            min-width: 15px;
+        }
+        .tracker-divider.active {
+            background: var(--neon-green);
+        }
+    </style>
 </head>
 <body>
     <!-- Animated Cyber Grid Background -->
@@ -29,25 +85,25 @@
                 <div>
                     <h1 class="brand-title" style="font-size: 20px;">PASSWORD STRENGTH EVALUATION</h1>
                     <p class="mono" style="font-size: 11px; color: var(--neon-blue);">
-                        BASED ON MODERN ATTACK TECHNIQUES | 30+ MILLION THREAT RECORDS
+                        BASED ON MODERN ATTACK TECHNIQUES | PROPOSED SYSTEM WORKFLOW
                     </p>
                 </div>
             </div>
 
             <div class="status-badge">
                 <span class="pulse-dot"></span>
-                <span>SQLITE SEARCH ENGINE & THREAT CORPUS: ACTIVE</span>
+                <span>SQLITE THREAT CORPUS ENGINE: ACTIVE</span>
             </div>
         </header>
 
         <!-- HERO / LANDING SECTION -->
         <section class="hero-section" id="hero">
             <div class="hero-tag">
-                <i class="fas fa-database"></i> INDEXED THREAT CORPUS: 30+ MILLION RECORDS
+                <i class="fas fa-database"></i> SQLITE INDEXED CORPUS: 30+ MILLION RECORDS
             </div>
             <h2 class="hero-title">Password Strength Evaluation<br>Based on Modern Attack Techniques</h2>
             <p class="hero-subtitle">
-                Traditional password checkers rely on static rule sets (e.g., minimum 8 chars, 1 uppercase, 1 symbol) which create a false sense of security. This platform replaces outdated static rules with offensive threat modeling—evaluating passwords against a 30+ Million record indexed SQLite threat intelligence corpus, structural pattern masks, Shannon entropy, and multi-hardware attacker capabilities.
+                Traditional password checkers rely on static rule sets (e.g., minimum 8 chars, 1 uppercase, 1 symbol) which create a false sense of security. This platform implements the Proposed System Workflow—evaluating passwords through 6 real-time attack stages: Input, Preprocessing, SQLite Dictionary Lookup, Pattern & Mask Analysis, Shannon Entropy, and Multi-Hardware Crack Time Estimation.
             </p>
             <div class="hero-actions">
                 <a href="#evaluator" class="btn-cyber">
@@ -58,6 +114,44 @@
                 </a>
             </div>
         </section>
+
+        <!-- REAL-TIME 6-STEP TOP PROGRESS TRACKER -->
+        <div class="tracker-container" id="workflowTracker">
+            <div class="tracker-step" id="tstep1">
+                <div class="step-badge" id="sbadge1">1</div>
+                <span>Input</span>
+            </div>
+            <div class="tracker-divider" id="tdiv1"></div>
+            
+            <div class="tracker-step" id="tstep2">
+                <div class="step-badge" id="sbadge2">2</div>
+                <span>Preprocess</span>
+            </div>
+            <div class="tracker-divider" id="tdiv2"></div>
+            
+            <div class="tracker-step" id="tstep3">
+                <div class="step-badge" id="sbadge3">3</div>
+                <span>Dictionary</span>
+            </div>
+            <div class="tracker-divider" id="tdiv3"></div>
+            
+            <div class="tracker-step" id="tstep4">
+                <div class="step-badge" id="sbadge4">4</div>
+                <span>Pattern</span>
+            </div>
+            <div class="tracker-divider" id="tdiv4"></div>
+            
+            <div class="tracker-step" id="tstep5">
+                <div class="step-badge" id="sbadge5">5</div>
+                <span>Entropy</span>
+            </div>
+            <div class="tracker-divider" id="tdiv5"></div>
+            
+            <div class="tracker-step" id="tstep6">
+                <div class="step-badge" id="sbadge6">6</div>
+                <span>Score</span>
+            </div>
+        </div>
 
         <!-- STEP 8: DATASET STATISTICS CARD -->
         <section style="margin-bottom: 35px;" id="statistics">
@@ -148,7 +242,7 @@
             </div>
         </section>
 
-        <!-- MAIN EVALUATOR SECTION (6-STEP REAL-TIME WORKFLOW) -->
+        <!-- MAIN EVALUATOR SECTION (6-STEP WORKFLOW) -->
         <section class="evaluator-section" id="evaluator">
             <!-- DASHBOARD SUMMARY CARDS (4 CARDS) -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 25px;">
@@ -176,7 +270,7 @@
                     <div class="card-title">
                         <i class="fas fa-terminal"></i> Enter Password for Real-Time Threat Analysis
                     </div>
-                    <span class="mono" style="font-size: 12px; color: var(--neon-blue);">INDEXED DB SEARCH (0.01 ms)</span>
+                    <span class="mono" style="font-size: 12px; color: var(--neon-blue);">INDEXED DB SEARCH (<100 ms)</span>
                 </div>
 
                 <!-- Input Field -->
@@ -214,7 +308,7 @@
 
             <!-- REAL-TIME 6-STEP WORKFLOW DISPLAY PANEL -->
             <h3 style="margin-bottom: 15px; font-size: 18px; color: var(--neon-blue);">
-                <i class="fas fa-diagram-project"></i> Real-Time Evaluation Pipeline (Steps 1–6)
+                <i class="fas fa-diagram-project"></i> Proposed System Workflow Details (Steps 1–6)
             </h3>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 35px;">
@@ -229,13 +323,19 @@
                         <div class="metric-label">Step 1 Status</div>
                         <div style="font-size: 13px; color: var(--neon-green);" id="step1Status">Awaiting password input...</div>
 
-                        <div class="metric-label" style="margin-top: 12px;">Step 2 Character Count</div>
-                        <div style="font-size: 18px; font-family: var(--font-mono); color: #fff;" id="step2Length">0 Characters</div>
-
-                        <div class="metric-label" style="margin-top: 10px;">Detected Categories</div>
-                        <div style="font-size: 12px; color: var(--text-muted);" id="step2Categories">
-                            None
-                        </div>
+                        <div class="metric-label" style="margin-top: 12px;">Step 2 Preprocessing Live breakdown</div>
+                        <table class="cyber-table" style="margin-top: 8px; font-size: 12px;">
+                            <thead>
+                                <tr><th>Check</th><th>Result</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Length</td><td id="step2Length">0</td></tr>
+                                <tr><td>Uppercase</td><td id="step2Upper">0</td></tr>
+                                <tr><td>Lowercase</td><td id="step2Lower">0</td></tr>
+                                <tr><td>Numbers</td><td id="step2Digits">0</td></tr>
+                                <tr><td>Symbols</td><td id="step2Symbols">0</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -243,13 +343,13 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <div class="card-title" style="font-size: 14px;">
-                            <i class="fas fa-book"></i> Step 3 — Indexed SQLite Threat Corpus Search
+                            <i class="fas fa-book"></i> Step 3 — SQLite Dictionary / Breach Match
                         </div>
                     </div>
                     <div class="metric-box" style="margin-top: 0;">
-                        <div class="metric-label">Dataset Search Status</div>
-                        <div style="font-size: 13px; color: #fff;" id="step3Result">No input password provided.</div>
-                        <div class="risk-tag risk-safe" id="step3Tag" style="margin-top: 10px;">NO BREACH MATCH</div>
+                        <div class="metric-label">SQLite Search Output</div>
+                        <div style="font-size: 13px; color: #fff;" id="step3Result">No dictionary match.</div>
+                        <div class="risk-tag risk-safe" id="step3Tag" style="margin-top: 10px;">NO DICTIONARY MATCH</div>
                     </div>
                 </div>
 
@@ -261,10 +361,11 @@
                         </div>
                     </div>
                     <div class="metric-box" style="margin-top: 0;">
-                        <div class="metric-label">Structural Pattern Output</div>
+                        <div class="metric-label">Detected Structural Masks</div>
                         <div style="font-size: 13px; color: var(--neon-yellow);" id="step4Pattern">
                             No predictable structural patterns detected.
                         </div>
+                        <div id="step4Badges" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px;"></div>
                     </div>
                 </div>
             </div>
@@ -273,7 +374,7 @@
             <div class="glass-card animated-border" style="margin-bottom: 35px;">
                 <div class="card-header">
                     <div class="card-title">
-                        <i class="fas fa-server"></i> Step 5 — Attacker Hardware Profiles & Crack-Time Graph (Chart.js)
+                        <i class="fas fa-server"></i> Step 5 — Entropy & Multi-Hardware Crack Time (Chart.js)
                     </div>
                 </div>
 
@@ -323,7 +424,7 @@
             <div class="glass-card" style="margin-bottom: 35px; border-left: 4px solid var(--neon-blue);">
                 <div class="card-header">
                     <div class="card-title">
-                        <i class="fas fa-clipboard-check"></i> Step 6 — Final Threat Verdict & Security Remediations
+                        <i class="fas fa-clipboard-check"></i> Step 6 — Final Score & Explainable Verdict
                     </div>
                 </div>
 
@@ -404,7 +505,7 @@
         <!-- FOOTER -->
         <footer class="footer">
             <p>Password Strength Evaluation Based on Modern Attack Techniques</p>
-            <p style="margin-top: 5px; color: var(--neon-blue);">Corpus Capacity: 30+ Million Records | Flask, SQLite, zxcvbn & Chart.js</p>
+            <p style="margin-top: 5px; color: var(--neon-blue);">Proposed System Workflow | SQLite Indexed Search | Chart.js</p>
         </footer>
     </div>
 
