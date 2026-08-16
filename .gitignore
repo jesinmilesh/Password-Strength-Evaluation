@@ -9,6 +9,6 @@ venv/
 .vscode/
 .idea/
 
-# Massive Dataset Files (>10MB) for GitHub & Render RAM limits
-datasets/extended_threat_corpus*
-datasets/global_breach_corpus*
+# Database files
+*.db
+*.sqlite3
