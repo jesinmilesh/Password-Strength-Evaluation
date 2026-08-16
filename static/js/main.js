@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ticks: { color: '#94a3b8' }
                     },
                     x: {
-                        grid: { display: False },
+                        grid: { display: false },
                         ticks: { color: '#94a3b8' }
                     }
                 },
