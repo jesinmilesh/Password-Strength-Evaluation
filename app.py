@@ -31,14 +31,18 @@ def close_db_connection(exception):
 # ROUTES & ENDPOINTS
 # ----------------------------------------------------------------------
 @app.route('/health')
+@app.route('/api/health')
 def health():
     return jsonify({"status": "online"})
 
 @app.route('/')
+@app.route('/api')
+@app.route('/api/index')
 def index():
     return render_template('index.html', stats=STATISTICS_STATS)
 
 @app.route('/evaluate', methods=['POST'])
+@app.route('/api/evaluate', methods=['POST'])
 def evaluate():
     data = request.get_json(silent=True) or request.form
     password = data.get('password', '')
@@ -47,6 +51,7 @@ def evaluate():
     return jsonify(result)
 
 @app.route('/generate', methods=['GET', 'POST'])
+@app.route('/api/generate', methods=['GET', 'POST'])
 def generate():
     data = request.get_json(silent=True) or request.args
     length = int(data.get('length', 16))
@@ -85,6 +90,7 @@ def generate():
     })
 
 @app.route('/result')
+@app.route('/api/result')
 def result_page():
     return render_template('result.html')
 
