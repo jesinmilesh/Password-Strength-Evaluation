@@ -35,10 +35,14 @@ def close_db_connection(exception):
 def health():
     return jsonify({"status": "online"})
 
-@app.route('/')
-@app.route('/api')
-@app.route('/api/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/api', methods=['GET', 'POST'])
+@app.route('/api/index', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        return evaluate()
+    if 'length' in request.args or request.args.get('generate') == 'true':
+        return generate()
     return render_template('index.html', stats=STATISTICS_STATS)
 
 @app.route('/evaluate', methods=['POST'])
