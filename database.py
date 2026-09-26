@@ -3,31 +3,42 @@ import sqlite3
 from datetime import datetime
 from flask import g, has_app_context
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_DIR = os.path.join(BASE_DIR, 'database')
+import tempfile
 
-PASSWORDS_DB_PATH = os.path.join(DB_DIR, 'passwords.db')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# On Vercel / serverless platforms, BASE_DIR is read-only; use /tmp for runtime logs
+if os.environ.get('VERCEL') or not os.access(BASE_DIR, os.W_OK):
+    DB_DIR = os.path.join(tempfile.gettempdir(), 'password_evaluation_db')
+else:
+    DB_DIR = os.path.join(BASE_DIR, 'database')
+
+LOCAL_PASSWORDS_DB = os.path.join(BASE_DIR, 'database', 'passwords.db')
+PASSWORDS_DB_PATH = LOCAL_PASSWORDS_DB if os.path.exists(LOCAL_PASSWORDS_DB) else os.path.join(DB_DIR, 'passwords.db')
 LOGS_DB_PATH = os.path.join(DB_DIR, 'logs.db')
 
 def init_db_storage():
-    """Ensure database directory and logs.db schema exist."""
-    if not os.path.exists(DB_DIR):
-        os.makedirs(DB_DIR)
+    """Ensure database directory and logs.db schema exist without crashing on read-only systems."""
+    try:
+        if not os.path.exists(DB_DIR):
+            os.makedirs(DB_DIR, exist_ok=True)
 
-    conn = sqlite3.connect(LOGS_DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS evaluation_logs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT NOT NULL,
-            score INTEGER NOT NULL,
-            verdict TEXT NOT NULL,
-            dict_match INTEGER NOT NULL,
-            entropy REAL NOT NULL
-        )
-    """)
-    conn.commit()
-    conn.close()
+        conn = sqlite3.connect(LOGS_DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS evaluation_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                score INTEGER NOT NULL,
+                verdict TEXT NOT NULL,
+                dict_match INTEGER NOT NULL,
+                entropy REAL NOT NULL
+            )
+        """)
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Database Init Notice (Read-only environment or /tmp access): {e}")
 
 init_db_storage()
 

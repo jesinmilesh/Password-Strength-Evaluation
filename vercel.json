@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "templates/**,static/**,datasets/common_passwords.txt,datasets/high_risk_passwords.txt,datasets/keyboard_patterns.txt,datasets/names.txt,datasets/years.txt,datasets/english_words.txt,datasets/breach_root_patterns.txt"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py"
+    }
+  ]
+}

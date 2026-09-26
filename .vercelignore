@@ -1,0 +1,14 @@
+# Large offline datasets (>300MB, used only by build_db.py)
+datasets/extended_threat_corpus_*
+datasets/global_breach_corpus_*
+database/*.db
+
+# Offline tools & dev files
+build_db.py
+Procfile
+__pycache__/
+*.py[cod]
+.env
+venv/
+.vscode/
+.idea/
